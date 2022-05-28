@@ -1,10 +1,11 @@
 package Logic;
 
+
 public class ShipBuilding extends Organization implements Money {
     private String ship_number;
 
-    public ShipBuilding(String name, String type, int year, int ship_number) {
-        super(name, type, year);
+    public ShipBuilding(int ID,String name, String type, int year, int ship_number) {
+        super(ID,name, type, year,Enum.ShipBuilding);
         setShip_number(ship_number);
 
     }
@@ -19,8 +20,15 @@ public class ShipBuilding extends Organization implements Money {
     }
 
     @Override
-    public void printInfo() {
-        System.out.printf("Судостроительная компания %s \"%s\", созданная в %d году (%d выпущенных кораблей)\n", type, name, year, ship_number + "\n");
+    public String[] printInfo() {
+        StringBuilder info = new StringBuilder();
+        info.append(ID).append(",").
+                append(name).append(",")
+                .append(type).append(",")
+                .append(year).append(",")
+                .append(ship_number).append(",")
+                .append(company_type);
+        return info.toString().split(",");
     }
 
     @Override

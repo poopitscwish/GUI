@@ -3,14 +3,12 @@ package Logic;
 public class Insurance extends Organization implements Money {
     private String employees;
 
-    public Insurance(String name, String type, int year, int employees) {
-        super(name, type, year);
-        setEmployees(employees);
-    }
-
-    public void setEmployees(int employees) {
+    public Insurance(int ID, String name, String type, int year, int employees) {
+        super(ID,name, type, year,Enum.Insurance);
         this.employees = Integer.toString(employees);
     }
+
+
 
     public void Bankruptcy()
     {
@@ -18,8 +16,15 @@ public class Insurance extends Organization implements Money {
     }
 
     @Override
-    public void printInfo() {
-        System.out.print("Страховая компания " + type + " " + name + ", основанная в " + year + " году," + " кол-во сотрудников: " + employees + "\n");
+    public String[] printInfo() {
+        StringBuilder info = new StringBuilder();
+        info.append(ID).append(",").
+                append(name).append(",")
+                .append(type).append(",")
+                .append(year).append(",")
+                .append(employees).append(",")
+                .append(company_type);
+        return info.toString().split(",");
     }
 
     @Override

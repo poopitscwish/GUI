@@ -3,11 +3,9 @@ package GUI;
 import javax.swing.*;
 import java.awt.*;
 
-import Logic.Company;
-import Logic.SQL;
+import Logic.*;
+import Logic.Enum;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -18,12 +16,13 @@ public class NewCompanyWindow extends JFrame {
     private static ArrayList<JTextField> fields = new ArrayList<>();
     private String[] types = {"ООО", "ЗАО", "ОАО"};
     private SQL database;
+    private Organization company;
 
-
-    public NewCompanyWindow(int Company_code, String header, String special, JFrame f) {
+    public NewCompanyWindow(int Company_code, String header, String special, JFrame f, MainWindow window) {
         super(header);
         database = new SQL();
-        database.connect("1");
+        if(window.getName() !=null && !window.getName().equals(""))
+         database.connect(window.getName());
         f.setVisible(false);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -37,8 +36,6 @@ public class NewCompanyWindow extends JFrame {
         Container container = getContentPane();
         container.setLayout(null);
         setVisible(true);
-
-        Company company = new Company();
 
         JLabel Company_name = new JLabel("Имя компании:");
         Company_name.setBounds(3, 0, 150, 30);
@@ -78,17 +75,32 @@ public class NewCompanyWindow extends JFrame {
         container.add(spec);
 
         container.add(add_button);
-        add_button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                switch (Company_code) {
-                    case 0:
-                        company.addAirline(name.getText(),(String)type.getSelectedItem(),Integer.parseInt(year.getText()),spec.getText());
-                        database.addData(company);
-                        break;
+
+        add_button.addActionListener(e -> {
+            try {
+                if (database.getConnection() != null) {
+                    switch (Company_code) {
+                        case 0:
+                            company = new AirLine(0, name.getText(), (String) type.getSelectedItem(), Integer.parseInt(year.getText()), spec.getText());
+                            database.addData(company, Enum.AirLine);
+                            break;
+                        case 1:
+                            company = new Insurance(0, name.getText(), (String) type.getSelectedItem(), Integer.parseInt(year.getText()), Integer.parseInt(spec.getText()));
+                            database.addData(company, Enum.Insurance);
+                            break;
+                        case 2:
+                            company = new ShipBuilding(0, name.getText(), (String) type.getSelectedItem(), Integer.parseInt(year.getText()), Integer.parseInt(spec.getText()));
+                            database.addData(company, Enum.ShipBuilding);
+                            break;
+                    }
                 }
+                else
+                    JOptionPane.showMessageDialog(window, "Вы не открыли базу данных!", "Внимание!", JOptionPane.ERROR_MESSAGE);
+                window.updateTable(window.getSQL());
+            } catch (NumberFormatException exception) {
+                JOptionPane.showMessageDialog(window, "Введите числовое значение!", "Внимание!", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
-
-
 }
+

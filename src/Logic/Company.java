@@ -1,72 +1,73 @@
 package Logic;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
-public class Company extends Organization {
+public class Company  {
     private final ArrayList<Organization> organizations;
-    private JFrame frame;
 
     public Company() {
-        super("","",1);
+
         organizations = new ArrayList<>();
     }
 
-    public void addAirline(String name, String type, int year, String type_technical) {
-        organizations.add(new AirLine(name, type, year, type_technical));
+    public void addOrganization(Organization orga){
+        organizations.add(orga);
     }
 
-    public void addShipBuilding(String name, String type, int year, int ship_number) {
-        organizations.add(new ShipBuilding(name, type, year, ship_number));
+    public ArrayList<Organization> getList(){
+        return organizations;
     }
 
-    public void addInsurance(String name, String type, int year, int employees) {
-        organizations.add(new Insurance(name, type, year, employees));
-    }
-
-    public Organization find(String name, String type) {
+    public Company findid(int name) {
+        Company a = new Company();
         for (Organization organization : organizations) {
-            if (organization.equals(name, type)) {
-                return organization;
+            if (organization.getID() == name) {
+                a.addOrganization(organization);
             }
         }
-        return null;
+        return a;
     }
 
+    public Company findYear(int name) {
+        Company a = new Company();
+        for (Organization organization : organizations) {
+            if (organization.getYear() == name) {
+                a.addOrganization(organization);
+            }
+        }
+        return a;
+    }
+
+    public Company findname(String name) {
+        Company a = new Company();
+        for (Organization organization : organizations) {
+            if (organization.getName().equals(name)) {
+                a.addOrganization(organization);
+            }
+        }
+        return a;
+    }
+    public Company findCompanytype(String name) {
+        Company a = new Company();
+        for (Organization organization : organizations) {
+            if (organization.getCompany_type().equals(name)) {
+                a.addOrganization(organization);
+            }
+        }
+        return a;
+    }
+    public Company findType(String name) {
+        Company a = new Company();
+        for (Organization organization : organizations) {
+            if (organization.getType().equals(name)) {
+                a.addOrganization(organization);
+            }
+        }
+        return a;
+    }
     public void clear() {
         organizations.clear();
     }
 
-    public boolean remove(String name, String type) {
-        Organization organization = find(name, type);
-        if (organization != null) {
-            organizations.remove(organization);
-            return true;
-        }
-        return false;
-    }
-
-
-    public void printAll() {
-        //System.out.println('\n');
-        if (organizations.isEmpty()) {
-            System.out.println("Список пуст");
-        }
-        for (Organization organization : organizations) {
-            organization.printInfo();
-        }
-        System.out.println("\n");
-    }
-
-    @Override
-    public void printInfo() {
-
-    }
-
-    @Override
-    public String getSpecial() {
-        return null;
-    }
 }
 

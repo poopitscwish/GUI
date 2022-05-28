@@ -1,10 +1,12 @@
 package Logic;
 
+import java.sql.Struct;
+
 public class AirLine extends Organization implements Money {
     private String type_technical;
 
-    public AirLine(String name, String type, int year, String type_technical) {
-        super(name, type, year);
+    public AirLine(int ID, String name, String type, int year, String type_technical) {
+        super(ID,name, type, year,Enum.AirLine);
         setTechnical(type_technical);
     }
 
@@ -20,8 +22,15 @@ public class AirLine extends Organization implements Money {
 
 
     @Override
-    public void printInfo() {
-        System.out.printf("Авиа компания %s \"%s\", созданная в %d году (тип выпускаемой техники: %s)\n", type, name, year, type_technical + "\n");
+    public String[] printInfo() {
+        StringBuilder info = new StringBuilder();
+        info.append(ID).append(",").
+                append(name).append(",")
+                .append(type).append(",")
+                .append(year).append(",")
+                .append(type_technical).append(",")
+                .append(company_type);
+        return info.toString().split(",");
     }
 
     @Override
